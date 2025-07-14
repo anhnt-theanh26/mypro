@@ -18,7 +18,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('category::index');
+        $categories = Category::get();
+        return view('category::index', compact('categories'));
     }
 
     /**
@@ -58,6 +59,27 @@ class CategoryController extends Controller
             return redirect()->back()->with('error', 'Có lỗi xảy ra: ' . $th->getMessage());
         }
     }
+
+    public function delete($id, Request $request)
+    {
+        try {
+            $category = Category::find($id);
+            if (!$category) {
+                Alert::error('Có lỗi xảy ra', 'Không tìm thấy danh mục');
+                return redirect()->back()->with('error', 'Không tìm thấy danh mục!');
+            }
+            $category->delete();
+            Alert::success('Thành công', 'Xóa danh mục thành công');
+            return redirect()->back()->with('success', 'Xóa danh mục thành công!');
+        } catch (\Throwable $th) {
+            if ($request->ajax()) {
+                return response()->json(['error' => 'Có lỗi xảy ra: ' . $th->getMessage()], 500);
+            }
+            Alert::error('Có lỗi xảy ra:', $th->getMessage());
+            return redirect()->back()->with('error', 'Có lỗi xảy ra: ' . $th->getMessage());
+        }
+    }
+
 
     /**
      * Show the specified resource.

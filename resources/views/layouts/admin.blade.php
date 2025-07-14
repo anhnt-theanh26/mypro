@@ -14,6 +14,8 @@
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
             <!-- Menu -->
+            @includeIf('category::sidebar')
+            @includeIf('image::sidebar')
             @include('admin.partial.sidebar')
             <!-- / Menu -->
 

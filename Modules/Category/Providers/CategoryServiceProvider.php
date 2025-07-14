@@ -28,6 +28,11 @@ class CategoryServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->moduleName, 'Database/Migrations'));
+
+        $this->publishes([
+            __DIR__ . '/../Resources/assets/js' => public_path('js/category'),
+            __DIR__ . '/../Resources/assets/css' => public_path('css/category'),
+        ], 'category-assets');
     }
 
     /**
@@ -51,7 +56,8 @@ class CategoryServiceProvider extends ServiceProvider
             module_path($this->moduleName, 'Config/config.php') => config_path($this->moduleNameLower . '.php'),
         ], 'config');
         $this->mergeConfigFrom(
-            module_path($this->moduleName, 'Config/config.php'), $this->moduleNameLower
+            module_path($this->moduleName, 'Config/config.php'),
+            $this->moduleNameLower
         );
     }
 

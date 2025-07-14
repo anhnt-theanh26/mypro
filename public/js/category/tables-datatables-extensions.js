@@ -1,0 +1,80 @@
+'use strict';
+
+
+$(function () {
+    var dt_scrollable_table = $('.dt-scrollableTable');
+
+    if (dt_scrollable_table.length) {
+        var dt_scrollableTable = dt_scrollable_table.DataTable({
+            data: createCategoryJson,
+
+            columns: [
+                { data: 'id' },
+                { data: 'name' },
+                { data: 'slug' },
+                { data: 'is_hot' },
+                { data: 'image' },
+                { data: null }
+            ],
+            columnDefs: [
+                {
+                    // Label
+                    targets: 3,
+                    render: function (data, type, full, meta) {
+                        const status = data === 1 ? 'Hot' : 'Not Hot';
+                        const badgeClass = data === 1 ? 'bg-label-danger' : 'bg-label-secondary';
+                        return `<span class="badge ${badgeClass}">${status}</span>`
+                    }
+                },
+                {
+                    targets: 4,
+                    render: function (data, type, full, meta) {
+                        const imgSrc = data ? data : 'https://static.thenounproject.com/png/1077596-200.png';
+                        return `<img src="${imgSrc}" alt="image" class="rounded-circle" width="50" height="50" />`;
+                    }
+                },
+                {
+                    targets: 5, // Cột Actions
+                    title: 'Actions',
+                    searchable: false,
+                    orderable: false,
+                    render: function (data, type, full, meta) {
+                        var detailsUrl = '/admin/category/' + full.id;
+                        var editUrl = '/admin/category/' + full.id + '/edit';
+                        var restoreUrl = '/admin/category/' + full.id + '/restore';
+                        var deleteUrl = '/admin/category/' + full.id + '/delete';
+
+                        return (
+                            `<div class="d-inline-block">
+                                <a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                    <i class="text-primary ti ti-dots-vertical"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end m-0">
+                                    <a href="${editUrl}" class="dropdown-item">Edit</a>
+                                    <form action="/admin/category/${full.id}/delete" method="POST" style="display:inline;">
+                                        <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]').getAttribute('content')}">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <button type="submit" class="dropdown-item text-danger" style="border: none; background: none; color: red;">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                            `
+                        );
+
+                    }
+                }
+            ],
+            // Scroll options
+            scrollY: '300px',
+            scrollX: true,
+            dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>'
+        });
+    }
+
+    // Filter form control to default size
+    // ? setTimeout used for multilingual table initialization
+    setTimeout(() => {
+        $('.dataTables_filter .form-control').removeClass('form-control-sm');
+        $('.dataTables_length .form-select').removeClass('form-select-sm');
+    }, 200);
+});

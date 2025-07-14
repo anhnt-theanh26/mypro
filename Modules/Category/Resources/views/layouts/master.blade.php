@@ -1,17 +1,9 @@
 @extends('layouts.admin')
 
-@push('push_css')
-    @parent
-@endpush
-
-@section('sidebar')
+{{-- @section('sidebar')
     @include('category::sidebar')
-@endsection
+@endsection --}}
 
 @section('content')
     @yield('content-child')
 @endsection
-
-@push('push_js')
-    @parent
-@endpush
