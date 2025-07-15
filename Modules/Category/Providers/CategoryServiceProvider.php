@@ -31,7 +31,7 @@ class CategoryServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__ . '/../Resources/assets/js' => public_path('js/category'),
-            __DIR__ . '/../Resources/assets/css' => public_path('css/category'),
+            // __DIR__ . '/../Resources/assets/css' => public_path('css/category'),
         ], 'category-assets');
     }
 

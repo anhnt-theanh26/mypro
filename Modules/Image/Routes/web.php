@@ -16,22 +16,15 @@ use UniSharp\LaravelFilemanager\Lfm;
 
 Route::prefix('admin')->as('admin.')->group(function () {
     Route::prefix('image')->as('image.')->group(function () {
-        Route::get('/', [ImageController::class, 'index'])->name('index');
+        Route::get('/', action: [ImageController::class, 'index'])->name('index');
     });
-    // Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
-    // Route::prefix('laravel-filemanager')->group(function () {
-    // Route::group(['prefix' => 'laravel-filemanager'], function () {
-    //     Lfm::routes();
-    // });
-    Route::group(['prefix' => 'laravel-filemanager', 'middleware' => []], function () {
-        Lfm::routes(); 
+    Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web']], function () {
+        Lfm::routes();
     });
 });
-Route::group(['prefix' => 'laravel-filemanager'], function () {
-    Lfm::routes(); 
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web']], function () {
+    Lfm::routes();
 });
 
-
-
-// Route::get('login', [ImageController::class, 'showLoginForm'])->name('login');
-// Route::post('login', [ImageController::class, 'login']);
+Route::get('login', [ImageController::class, 'showLoginForm'])->name('login');
+Route::post('login', [ImageController::class, 'login']);

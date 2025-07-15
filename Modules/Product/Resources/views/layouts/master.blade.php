@@ -1,10 +1,9 @@
 @extends('layouts.admin')
 
-@section('css')
-@endsection
-@section('sidebar')
-    @include('product::layouts.sidebar')
-@endsection
+@push('push_css')
+@endpush
+
+
 @section('content')
     <div class="container">
         @yield('content-child')
@@ -35,5 +34,5 @@
     </div>
 @endsection
 
-@section('js')
-@endsection
+@push('push_js')
+@endpush

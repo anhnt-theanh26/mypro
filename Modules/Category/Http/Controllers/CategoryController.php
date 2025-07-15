@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
 use Modules\Category\Entities\Category;
 use Modules\Category\Http\Requests\StoreCategoryRequest;
+use Modules\Category\Http\Requests\UpdateCategoryRequest;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class CategoryController extends Controller
@@ -60,10 +61,94 @@ class CategoryController extends Controller
         }
     }
 
-    public function delete($id, Request $request)
+
+    /**
+     * Show the specified resource.
+     * @param int $id
+     * @return Renderable
+     */
+    public function show(Category $category)
+    {
+        return view('category::show');
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     * @param int $id
+     * @return Renderable
+     */
+    public function edit(Category $category)
+    {
+        $category = Category::withTrashed()->where('id', $category->id)->first();
+        return view('category::edit', compact('category'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     * @param Request $request
+     * @param int $id
+     * @return Renderable
+     */
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
         try {
-            $category = Category::find($id);
+            $category = Category::withTrashed()->where('id', $category->id)->first();
+            if (!$category) {
+                Alert::error('Có lỗi xảy ra', 'Khong tim thay danh muc');
+                return redirect()->back()->with('error', 'Khong tim thay danh muc!');
+            }
+            $originalSlug = Str::slug($request->name);
+            $newSlug = $originalSlug;
+            $count = 1;
+            while (
+                Category::withTrashed()->where('slug', $newSlug)->where('id', '!=', $category->id)->exists()
+            ) {
+                $newSlug = $originalSlug . '-' . $count++;
+            }
+            $data = [
+                'name' => $request->name,
+                'slug' => $newSlug,
+                'is_hot' => $request->has('is_hot') ? true : false,
+                'category_parent_id' => $request->category_parent_id,
+                'image' => $request->image,
+            ];
+            $category->update($data);
+            Alert::success('Thanh cong', 'Cập nhật danh mục thành công');
+            // return redirect()->route('admin.category.index')->with('success', 'Cập nhật thành công!');
+            return redirect()->back()->with('success', 'Cập nhật thành công!');
+        } catch (\Throwable $th) {
+            Alert::error('Có lỗi xảy ra:', $th->getMessage());
+            return redirect()->back()->with('error', 'Có lỗi xảy ra: ' . $th->getMessage());
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     * @param int $id
+     * @return Renderable
+     */
+
+    public function destroy(Category $category)
+    {
+        try {
+            $category = Category::onlyTrashed()->where('id', $category->id)->first();
+            if (!$category) {
+                Alert::error('Có lỗi xảy ra', 'Khong tim thay danh muc');
+                return redirect()->back()->with('error', 'Khong tim thay danh muc!');
+            }
+            $category->forceDelete();
+            Alert::success('Thanh cong', 'Xoa danh muc thanh cong');
+            return redirect()->back()->with('success', 'Xoa danh muc thanh cong!');
+        } catch (\Throwable $th) {
+            Alert::error('Có lỗi xảy ra:', $th->getMessage());
+            return redirect()->back()->with('error', 'Có lỗi xảy ra: ' . $th->getMessage());
+        }
+    }
+
+    public function delete(Request $request, Category $category)
+    {
+        try {
+            $category = Category::find($category->id);
             if (!$category) {
                 Alert::error('Có lỗi xảy ra', 'Không tìm thấy danh mục');
                 return redirect()->back()->with('error', 'Không tìm thấy danh mục!');
@@ -80,50 +165,26 @@ class CategoryController extends Controller
         }
     }
 
-
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function show($id)
-    {
-        return view('category::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function edit($id)
-    {
-        return view('category::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Renderable
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Renderable
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
     public function deleted()
     {
-        return view('category::restore');
+        $categories = Category::onlyTrashed()->orderByDesc('id')->get();
+        return view('category::restore', compact('categories'));
+    }
+
+    public function restore(Category $category)
+    {
+        try {
+            $category = Category::withTrashed()->where("id", $category->id)->first();
+            if (!$category) {
+                Alert::error('Có lỗi xảy ra', 'Khong tim thay danh muc');
+                return redirect()->back()->with('error', 'Khong tim thay danh muc!');
+            }
+            $category->restore();
+            Alert::success('Thanh cong', 'Khoi phuc danh muc thanh cong');
+            return redirect()->back()->with('success', 'Khoi phuc danh muc thanh cong!');
+        } catch (\Throwable $th) {
+            Alert::error('Có lỗi xảy ra:', $th->getMessage());
+            return redirect()->back()->with('error', 'Có lỗi xảy ra: ' . $th->getMessage());
+        }
     }
 }

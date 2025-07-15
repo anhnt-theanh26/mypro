@@ -5,6 +5,7 @@ namespace Modules\Image\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class ImageController extends Controller
 {
@@ -17,8 +18,22 @@ class ImageController extends Controller
         return view('image::index');
     }
 
-    public function showLoginForm(){}
-    public function login(){}
+    public function showLoginForm()
+    {
+        return view('image::login');
+    }
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->back();
+        }
+        return back()->withErrors([
+            'email' => 'Thông tin đăng nhập không đúng.',
+        ]);
+    }
     /**
      * Show the form for creating a new resource.
      * @return Renderable

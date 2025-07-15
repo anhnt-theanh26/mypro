@@ -28,13 +28,14 @@
             </table>
         </div>
     </div>
-
 @endsection
 
 @push('push_js')
     <script>
-        let createCategoryUrl = "{{ route('admin.category.create') }}";
-        var createCategoryJson = @json($categories);
+        let createUrl = "{{ route('admin.category.create') }}";
+        let dataJson = @json($categories) ?? '';
+        let table = 'category';
     </script>
     <script src="{{ asset('js/category/tables-datatables-extensions.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endpush

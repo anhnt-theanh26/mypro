@@ -16,6 +16,7 @@
             <!-- Menu -->
             @includeIf('category::sidebar')
             @includeIf('image::sidebar')
+            @includeIf('user::sidebar')
             @include('admin.partial.sidebar')
             <!-- / Menu -->
 

@@ -15,7 +15,7 @@
                     <div data-i18n="Create">Create</div>
                 </a>
             </li>
-            <li class="menu-item {{ request()->routeIs('admin.category.restore') ? 'active' : '' }}">
+            <li class="menu-item {{ request()->routeIs('admin.category.deleted') ? 'active' : '' }}">
                 <a href="{{ route('admin.category.deleted') }}" class="menu-link">
                     <div data-i18n="Restore">Restore</div>
                 </a>

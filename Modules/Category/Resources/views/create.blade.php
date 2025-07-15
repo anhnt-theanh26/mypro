@@ -2,9 +2,8 @@
 
 @section('title', 'Thêm mới danh mục')
 
-@section('css')
-    @parent
-@endsection
+@push('push_css')
+@endpush
 
 @section('content-child')
     <div class="row">
@@ -23,11 +22,20 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="formFile" class="form-label">Ảnh danh mục</label>
-                            <input class="form-control" type="file" id="formFile" name="image" />
-                            @error('image')
-                                <p class="text-danger">{{ $message }}</p>
-                            @enderror
+                            <label class="form-label" for="image">Ảnh danh mục</label><br>
+                            <input id="thumbnail" class="form-control" type="hidden" name="image">
+                            <div class="d-flex align-items-center">
+                                <div class="input-group" style="position: relative; display: inline-block; width: 80px;">
+                                    <img id="img" class="btn-image rounded-1"
+                                        src="{{ asset('./storage/default.jpg') }}" width="80px" alt="Image">
+                                    <button id="lfm" data-input="thumbnail" data-preview="holder" type="button"
+                                        class="btn btn-light btn-image rounded-1" id="choose-button"
+                                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; background: rgba(0, 0, 0, 0.4); border: none; color: white; font-weight: bold; text-align: center;">
+                                        Choose
+                                    </button>
+                                </div>
+                                <div id="holder" class="mx-2" style="width: 100%"></div>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label class="switch switch-primary">
@@ -46,11 +54,15 @@
                     </div>
                 </div>
                 <button type="submit" class="btn btn-success waves-effect waves-light">Thêm mới</button>
+                <a href="{{ route('admin.category.index') }}" class="btn btn-secondary waves-effect waves-light">Danh sách</a>
             </form>
         </div>
     </div>
 @endsection
 
-@section('js')
-    @parent
-@endsection
+@push('push_js')
+    <script src="{{ asset('/vendor/laravel-filemanager/js/stand-alone-button.js') }}"></script>
+    <script>
+        $('#lfm').filemanager('image');
+    </script>
+@endpush
