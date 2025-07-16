@@ -67,7 +67,7 @@ class CategoryController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function show(Category $category)
+    public function show(string $id)
     {
         return view('category::show');
     }
@@ -77,9 +77,9 @@ class CategoryController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function edit(Category $category)
+    public function edit(string $id)
     {
-        $category = Category::withTrashed()->where('id', $category->id)->first();
+        $category = Category::withTrashed()->where('id', $id)->first();
         return view('category::edit', compact('category'));
     }
 
@@ -128,10 +128,10 @@ class CategoryController extends Controller
      * @return Renderable
      */
 
-    public function destroy(Category $category)
+    public function destroy(string $id)
     {
         try {
-            $category = Category::onlyTrashed()->where('id', $category->id)->first();
+            $category = Category::onlyTrashed()->where('id', $id)->first();
             if (!$category) {
                 Alert::error('Có lỗi xảy ra', 'Khong tim thay danh muc');
                 return redirect()->back()->with('error', 'Khong tim thay danh muc!');
@@ -145,10 +145,10 @@ class CategoryController extends Controller
         }
     }
 
-    public function delete(Request $request, Category $category)
+    public function delete(Request $request, string $id)
     {
         try {
-            $category = Category::find($category->id);
+            $category = Category::find($id);
             if (!$category) {
                 Alert::error('Có lỗi xảy ra', 'Không tìm thấy danh mục');
                 return redirect()->back()->with('error', 'Không tìm thấy danh mục!');
@@ -171,10 +171,10 @@ class CategoryController extends Controller
         return view('category::restore', compact('categories'));
     }
 
-    public function restore(Category $category)
+    public function restore(string $id)
     {
         try {
-            $category = Category::withTrashed()->where("id", $category->id)->first();
+            $category = Category::withTrashed()->where("id", $id)->first();
             if (!$category) {
                 Alert::error('Có lỗi xảy ra', 'Khong tim thay danh muc');
                 return redirect()->back()->with('error', 'Khong tim thay danh muc!');

@@ -16,7 +16,7 @@
                         <div class="mb-3">
                             <label for="name" class="form-label">Tên danh mục</label>
                             <input type="text" class="form-control" id="name" name="name"
-                                placeholder="Tên danh mục" autofocus />
+                                placeholder="Tên danh mục" autofocus value="{{ old('name') }}" />
                             @error('name')
                                 <p class="text-danger">{{ $message }}</p>
                             @enderror
@@ -39,7 +39,8 @@
                         </div>
                         <div class="mb-3">
                             <label class="switch switch-primary">
-                                <input type="checkbox" class="switch-input" name="is_hot" checked="">
+                                <input type="checkbox" class="switch-input" name="is_hot"
+                                    {{ old('is_hot') ? 'checked' : '' }}>
                                 <span class="switch-toggle-slider">
                                     <span class="switch-on">
                                         <i class="ti ti-check"></i>
@@ -54,7 +55,8 @@
                     </div>
                 </div>
                 <button type="submit" class="btn btn-success waves-effect waves-light">Thêm mới</button>
-                <a href="{{ route('admin.category.index') }}" class="btn btn-secondary waves-effect waves-light">Danh sách</a>
+                <a href="{{ route('admin.category.index') }}" class="btn btn-secondary waves-effect waves-light">Danh
+                    sách</a>
             </form>
         </div>
     </div>

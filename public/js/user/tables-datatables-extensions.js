@@ -22,8 +22,9 @@ $(function () {
                 {
                     targets: 2,
                     render: function (data, type, full, meta) {
-                        const imgSrc = data ? data : 'https://static.thenounproject.com/png/1077596-200.png';
-                        return `<img src="${imgSrc}" alt="image" class="rounded-circle" width="50px" />`;
+                        const baseUrl = window.location.origin + '/';
+                        const imgSrc = data ? baseUrl + data : 'https://static.thenounproject.com/png/1077596-200.png';
+                        return `<img src="${imgSrc}" alt="image" class="" width="50px" />`;
                     }
                 },
                 {

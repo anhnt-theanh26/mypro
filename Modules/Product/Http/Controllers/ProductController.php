@@ -76,4 +76,17 @@ class ProductController extends Controller
     {
         //
     }
+
+    public function delete(Request $request, string $id)
+    {
+    }
+
+    public function deleted()
+    {
+        return view('product::restore');
+    }
+
+    public function restore(string $id)
+    {
+    }
 }

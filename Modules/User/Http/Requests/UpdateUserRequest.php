@@ -19,7 +19,7 @@ class UpdateUserRequest extends FormRequest
             'phone' => 'nullable|numeric|min:10|unique:users,phone,' . $this->route('user')->id,
             'address' => 'nullable|string|max:255',
             'birthday' => 'nullable|date',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ];
     }
 

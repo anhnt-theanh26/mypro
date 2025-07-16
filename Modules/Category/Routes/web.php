@@ -13,7 +13,7 @@ use Modules\Category\Http\Controllers\CategoryController;
 |
 */
 
-Route::prefix('admin')->as('admin.')->group(function () {
+Route::middleware('auth.admin')->prefix('admin')->as('admin.')->group(function () {
     Route::prefix('category')->as('category.')->group(function () {
         Route::delete('/{id}/delete', [CategoryController::class, 'delete'])->name('delete');
         Route::get('/deleted', [CategoryController::class, 'deleted'])->name('deleted');

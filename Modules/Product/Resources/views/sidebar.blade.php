@@ -1,25 +1,23 @@
 @push('sidebar-menu')
-    <!-- Dashboards -->
-    <li class="menu-item active open">
+    <li class="menu-item {{ request()->routeIs('admin.product.*') ? 'active open' : '' }}">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
-            <i class="menu-icon tf-icons ti ti-smart-home"></i>
-            <div data-i18n="Dashboards">Dashboards</div>
-            <div class="badge bg-label-primary rounded-pill ms-auto">3</div>
+            <i class="menu-icon tf-icons ti ti-brand-producthunt"></i>
+            <div data-i18n="Product">Product</div>
         </a>
         <ul class="menu-sub">
-            <li class="menu-item">
-                <a href="index.html" class="menu-link">
-                    <div data-i18n="Analytics">Analytics</div>
+            <li class="menu-item {{ request()->routeIs('admin.product.index') ? 'active' : '' }}">
+                <a href="{{ route('admin.product.index') }}" class="menu-link">
+                    <div data-i18n="Index">Index</div>
                 </a>
             </li>
-            <li class="menu-item">
-                <a href="dashboards-crm.html" class="menu-link">
-                    <div data-i18n="CRM">CRM</div>
+            <li class="menu-item {{ request()->routeIs('admin.product.create') ? 'active' : '' }}">
+                <a href="{{ route('admin.product.create') }}" class="menu-link">
+                    <div data-i18n="Create">Create</div>
                 </a>
             </li>
-            <li class="menu-item active">
-                <a href="dashboards-ecommerce.html" class="menu-link">
-                    <div data-i18n="eCommerce">eCommerce</div>
+            <li class="menu-item {{ request()->routeIs('admin.product.deleted') ? 'active' : '' }}">
+                <a href="{{ route('admin.product.deleted') }}" class="menu-link">
+                    <div data-i18n="Restore">Restore</div>
                 </a>
             </li>
         </ul>

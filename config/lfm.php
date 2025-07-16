@@ -49,7 +49,8 @@ return [
         'file'  => [
             'folder_name'  => 'files',
             'startup_view' => 'list',
-            'max_size'     => 50000, // size in KB
+            // 'max_size'     => 50000, // size in KB
+            'max_size'     => 1048576 , // size in KB
             'thumb' => true,
             'thumb_width' => 80,
             'thumb_height' => 80,
@@ -60,12 +61,20 @@ return [
                 'image/gif',
                 'application/pdf',
                 'text/plain',
+                'audio/mp3',
+                'audio/wav',
+                'video/mp4',
+                'video/avi',
+                'video/quicktime',
+                'audio/ogg',
+                'audio/mpeg',
             ],
         ],
         'image' => [
             'folder_name'  => 'files',
             'startup_view' => 'grid',
-            'max_size'     => 50000, // size in KB
+            // 'max_size'     => 50000, // size in KB
+            'max_size'     => 1048576 , // size in KB
             'thumb' => true,
             'thumb_width' => 80,
             'thumb_height' => 80,

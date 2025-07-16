@@ -15,11 +15,11 @@
                     <div data-i18n="Create">Create</div>
                 </a>
             </li>
-            {{-- <li class="menu-item {{ request()->routeIs('admin.user.restore') ? 'active' : '' }}">
+            <li class="menu-item {{ request()->routeIs('admin.user.deleted') ? 'active' : '' }}">
                 <a href="{{ route('admin.user.deleted') }}" class="menu-link">
                     <div data-i18n="Restore">Restore</div>
                 </a>
-            </li> --}}
+            </li>
         </ul>
     </li>
 @endpush

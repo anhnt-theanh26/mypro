@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <html lang="en" class="light-style layout-navbar-fixed layout-menu-fixed" dir="ltr" data-theme="theme-default"
-    data-assets-path="/admin/assets/" data-template="vertical-menu-template">
+    data-assets-path="/administrator/assets/" data-template="vertical-menu-template">
 
 <head>
     @include('admin.partial.head')
@@ -14,7 +14,9 @@
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
             <!-- Menu -->
+            @include('dashboard::sidebar')
             @includeIf('category::sidebar')
+            @include('product::sidebar')
             @includeIf('image::sidebar')
             @includeIf('user::sidebar')
             @include('admin.partial.sidebar')

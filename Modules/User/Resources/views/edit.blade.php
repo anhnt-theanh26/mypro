@@ -3,13 +3,13 @@
 @section('title', 'Thêm mới tài khoản')
 
 @push('push_css')
-    <link rel="stylesheet" href="{{ asset('/css/user/flatpickr.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/user/flatpickr.css') }}" />
 @endpush
 
 @section('content-child')
     <div class="row">
-        <div class="col-md-12">
-            <form action="{{ route('admin.user.update', $user->id) }}" method="post">
+        <div class="col-md-6">
+            <form action="{{ route('admin.user.update', $user->id) }}" method="post" enctype="multipart/form-data">
                 @csrf
                 @method('put')
                 <div class="card mb-4">
@@ -40,20 +40,13 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label class="form-label" for="image">Ảnh người dùng</label><br>
-                            <input id="thumbnail" class="form-control" type="hidden" name="image">
-                            <div class="d-flex align-items-center">
-                                <div class="input-group" style="position: relative; display: inline-block; width: 80px;">
-                                    <img id="img" class="btn-image rounded-1"
-                                        src="{{ asset('./storage/default.jpg') }}" width="80px" alt="Image">
-                                    <button id="lfm" data-input="thumbnail" data-preview="holder" type="button"
-                                        class="btn btn-light btn-image rounded-1" id="choose-button"
-                                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; background: rgba(0, 0, 0, 0.4); border: none; color: white; font-weight: bold; text-align: center;">
-                                        Choose
-                                    </button>
-                                </div>
-                                <div id="holder" class="mx-2" style="width: 100%"></div>
-                            </div>
+                            <label class="form-label" for="image">Ảnh người dùng</label>
+                            <input type="file" class="form-control" id="image" name="image" />
+                            <img src="{{ asset($user->image) }}" alt="image" width="50px" id="img"
+                                class="py-1">
+                            @error('image')
+                                <p class="text-danger">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="phone" class="form-label">Số điện thoại người dùng</label>
@@ -79,15 +72,81 @@
                 <a href="{{ route('admin.user.create') }}" class="btn btn-success waves-effect waves-light">Thêm mới</a>
             </form>
         </div>
+        <div class="col-md-6">
+            <form action="{{ route('admin.user.password', $user) }}" method="post">
+                @csrf
+                @method('put')
+                <div class="card mb-4">
+                    <h5 class="card-header">Change Password</h5>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <div class="form-password-toggle">
+                                <label class="form-label" for="old_password">Old Password</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="old_password"
+                                        value="{{ old('old_password') }}" placeholder="******" name="old_password" />
+                                    <span id="basic-default-password2" class="input-group-text cursor-pointer"><i
+                                            class="ti ti-eye-off"></i></span>
+                                </div>
+                                @error('old_password')
+                                    <p class="text-danger">{{ $message }}</p>
+                                @enderror
+                                @if (session('password_is_incorrect'))
+                                    <p class="text-danger">{{ session('password_is_incorrect') }}</p>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-password-toggle">
+                                <label class="form-label" for="new_password">New Password</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="new_password"
+                                        value="{{ old('new_password') }}" placeholder="******" name="new_password" />
+                                    <span id="basic-default-password2" class="input-group-text cursor-pointer"><i
+                                            class="ti ti-eye-off"></i></span>
+                                </div>
+                                @error('new_password')
+                                    <p class="text-danger">{{ $message }}</p>
+                                @enderror
+                                @if (session('oldpassword_like_newpassword'))
+                                    <p class="text-danger">{{ session('oldpassword_like_newpassword') }}</p>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-password-toggle">
+                                <label class="form-label" for="confirm_password">Confirm Password</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control"
+                                        id="confirm_password"value="{{ old('confirm_password') }}"
+                                        placeholder="******" name="confirm_password" />
+                                    <span id="basic-default-password2" class="input-group-text cursor-pointer"><i
+                                            class="ti ti-eye-off"></i></span>
+                                </div>
+                                @error('confirm_password')
+                                    <p class="text-danger">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-warning">Cập nhập</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 @endsection
 
 @push('push_js')
-    <script src="{{ asset('/js/user/flatpickr.js') }}"></script>
-    <script src="{{ asset('/js/user/forms-pickers.js') }}"></script>
+    <script src="{{ asset('js/user/flatpickr.js') }}"></script>
+    <script src="{{ asset('js/user/forms-pickers.js') }}"></script>
 
-    <script src="{{ asset('/vendor/laravel-filemanager/js/stand-alone-button.js') }}"></script>
     <script>
-        $('#lfm').filemanager('image');
+        // 1 ảnh
+        var image = document.querySelector('#image');
+        var img = document.querySelector('#img');
+        image.addEventListener('change', function(e) {
+            e.preventDefault();
+            img.src = URL.createObjectURL(this.files[0]);
+        })
     </script>
 @endpush

@@ -20,7 +20,7 @@ class StoreUserRequest extends FormRequest
             'phone' => 'nullable|digits_between:10,15|unique:users,phone',
             'address' => 'nullable|string',
             'birthday' => 'nullable|date',
-            'image' => 'nullable',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ];
 
     }

@@ -1,6 +1,6 @@
 @extends('user::layouts.master')
 
-@section('title', 'Danh sách danh mục')
+@section('title', 'Danh sách tài khoản')
 
 @push('push_css')
 @endpush
@@ -30,7 +30,6 @@
             </table>
         </div>
     </div>
-
 @endsection
 
 @push('push_js')
@@ -40,4 +39,5 @@
         let table = 'user';
     </script>
     <script src="{{ asset('js/user/tables-datatables-extensions.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endpush

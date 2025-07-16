@@ -2,5 +2,7 @@
     "Category": true,
     "Product": true,
     "Image": true,
-    "User": true
+    "User": true,
+    "Login": true,
+    "Dashboard": true
 }

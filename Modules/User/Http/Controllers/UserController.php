@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
 use Modules\User\Entities\User;
+use Modules\User\Http\Requests\ChangePasswordUserRequest;
 use Modules\User\Http\Requests\StoreUserRequest;
 use Modules\User\Http\Requests\UpdateUserRequest;
 
@@ -78,9 +79,9 @@ class UserController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function edit(User $user)
+    public function edit(string $id)
     {
-        $user = User::withTrashed()->where('id', $user->id)->first();
+        $user = User::withTrashed()->where('id', $id)->first();
         return view('user::edit', compact('user'));
     }
 
@@ -131,23 +132,96 @@ class UserController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function destroy(User $user)
+    public function destroy(string $id)
     {
-        //
+        try {
+            $user = User::onlyTrashed()->where('id', $id)->first();
+            if (!$user) {
+                Alert::error('Khong thay user', 'user khong ton tai');
+                return redirect()->back()->with('error', 'Khong tim thay user!');
+            }
+            if ($user->image != null && file_exists(public_path($user->image))) {
+                unlink(public_path($user->image));
+            }
+            $user->forceDelete();
+            Alert::success('Thanh cong', 'Xoa vinh vien user thanh cong');
+            return redirect()->back()->with('success', 'Xoa user thanh cong!');
+        } catch (\Throwable $th) {
+            Alert::error('Có lỗi xảy ra:', $th->getMessage());
+            return redirect()->back()->with('error', 'Có lỗi xảy ra: ' . $th->getMessage());
+        }
     }
 
-    public function delete(Request $request, User $user)
+    public function delete(Request $request, string $id)
     {
-
+        try {
+            $user = User::find($id);
+            if (!$user) {
+                Alert::error('Có lỗi xảy ra', 'Không tìm thấy người dùng');
+                return redirect()->back()->with('error', 'Không tìm thấy người dùng!');
+            }
+            if ($user->image != null && file_exists(public_path($user->image))) {
+                unlink(public_path($user->image));
+            }
+            $user->update(['image' => '']);
+            $user->delete();
+            Alert::success('Thành công', 'Xóa người dùng thành công');
+            return redirect()->back()->with('success', 'Xóa người dùng thành công!');
+        } catch (\Throwable $th) {
+            if ($request->ajax()) {
+                return response()->json(['error' => 'Có lỗi xảy ra: ' . $th->getMessage()], 500);
+            }
+            Alert::error('Có lỗi xảy ra:', $th->getMessage());
+            return redirect()->back()->with('error', 'Có lỗi xảy ra: ' . $th->getMessage());
+        }
     }
 
     public function deleted()
     {
-
+        $users = User::onlyTrashed()->orderByDesc('id')->get();
+        return view('user::restore', compact('users'));
     }
 
-    public function restore(User $user)
+    public function restore(string $id)
     {
+        try {
+            $user = User::withTrashed()->where("id", $id)->first();
+            if (!$user) {
+                Alert::error('Có lỗi xảy ra', 'Khong tim thay người dùng');
+                return redirect()->back()->with('error', 'Khong tim thay người dùng!');
+            }
+            $user->restore();
+            Alert::success('Thanh cong', 'Khoi phuc người dùng thanh cong');
+            return redirect()->back()->with('success', 'Khoi phuc người dùng thanh cong!');
+        } catch (\Throwable $th) {
+            Alert::error('Có lỗi xảy ra:', $th->getMessage());
+            return redirect()->back()->with('error', 'Có lỗi xảy ra: ' . $th->getMessage());
+        }
+    }
 
+    public function password(Request $request, ChangePasswordUserRequest $user)
+    {
+        try {
+            $user = User::withTrashed()->find($user->id);
+            if (!$user) {
+                Alert::error('Khong tim thay user:');
+                return redirect()->back()->with('error', 'Khong tim thay user');
+            }
+            if (!Hash::check($request->old_password, $user->password)) {
+                return redirect()->back()->with('password_is_incorrect', 'Mat khau cu khong dung!!');
+            }
+            if (Hash::check($request->new_password, $user->password)) {
+                return redirect()->back()->with('oldpassword_like_newpassword', 'Mat khau mới không được giống mật khẩu cũ!!');
+            }
+            $data = [
+                'password' => Hash::make($request['new_password']),
+            ];
+            $user->update($data);
+            Alert::success('Thanh cong', 'Cap nhap mat khau user thanh cong');
+            return redirect()->back()->with('success', 'Cap nhap mat khau user thanh cong');
+        } catch (\Throwable $th) {
+            Alert::error('Có lỗi xảy ra:', $th->getMessage());
+            return redirect()->back()->with('error', 'Có lỗi xảy ra: ' . $th->getMessage());
+        }
     }
 }

@@ -8,7 +8,7 @@
 @section('content-child')
     <div class="row">
         <div class="col-md-12">
-            <form action="{{ route('admin.category.update', $category->id) }}" method="post">
+            <form action="{{ route('admin.category.update', $category) }}" method="post">
                 @csrf
                 @method('put')
                 <div class="card mb-4">
