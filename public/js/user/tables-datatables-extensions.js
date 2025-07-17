@@ -11,6 +11,7 @@ $(function () {
             columns: [
                 { data: 'id' },
                 { data: 'name' },
+                { data: 'username' },
                 { data: 'image' },
                 { data: 'email' },
                 { data: 'address' },
@@ -20,7 +21,7 @@ $(function () {
             ],
             columnDefs: [
                 {
-                    targets: 2,
+                    targets: 3,
                     render: function (data, type, full, meta) {
                         const baseUrl = window.location.origin + '/';
                         const imgSrc = data ? baseUrl + data : 'https://static.thenounproject.com/png/1077596-200.png';
@@ -28,7 +29,7 @@ $(function () {
                     }
                 },
                 {
-                    targets: 4,
+                    targets: 5,
                     render: function (data, type, full, meta) {
                         if (type === 'display' && data) {
                             let maxLength = 30;
@@ -40,7 +41,7 @@ $(function () {
                     }
                 },
                 {
-                    targets: 6,
+                    targets: 7,
                     render: function (data, type, full, meta) {
                         if (type === 'display' && data) {
                             let date = new Date(full.birthday);
@@ -53,7 +54,7 @@ $(function () {
                     }
                 },
                 {
-                    targets: 7, // Cột Actions
+                    targets: 8, // Cột Actions
                     title: 'Actions',
                     searchable: false,
                     orderable: false,
@@ -74,12 +75,12 @@ $(function () {
                                         <form action="${restoreUrl}" method="POST" style="display:inline;">
                                             <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]').getAttribute('content')}">
                                             <input type="hidden" name="_method" value="POST">
-                                            <button type="submit" class="dropdown-item text-success" style="border: none; background: none; color: red;">Restore</button>
+                                            <button type="submit" class="dropdown-item text-success">Restore</button>
                                         </form>
                                         <form action="${destroyUrl}" class="destroy-form" method="POST" style="display:inline;">
                                             <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]').getAttribute('content')}">
                                             <input type="hidden" name="_method" value="DELETE">
-                                            <button type="submit" class="dropdown-item text-danger" onclick="confirm_delete()" style="border: none; background: none; color: red;">Destroy</button>
+                                            <button type="submit" class="dropdown-item text-danger" onclick="confirm_delete()">Destroy</button>
                                         </form>
                                     </div>
                                 </div>
@@ -94,16 +95,15 @@ $(function () {
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end m-0">
                                     <a href="${editUrl}" class="dropdown-item">Edit</a>
-                                    <form action="${deleteUrl}" class="destroy-form" method="POST" style="display:inline;">
+                                    <form action="${deleteUrl}" method="POST" style="display:inline;">
                                         <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]').getAttribute('content')}">
                                         <input type="hidden" name="_method" value="DELETE">
-                                        <button type="submit" class="dropdown-item text-danger" onclick="confirm_delete()" style="border: none; background: none; color: red;">Delete</button>
+                                        <button type="submit" class="dropdown-item text-danger" onclick="confirm_delete()">Delete</button>
                                     </form>
                                 </div>
                             </div>
                             `
                         );
-
                     }
                 }
             ],
@@ -126,7 +126,6 @@ $(function () {
 function confirm_delete() {
     document.querySelectorAll('.destroy-form').forEach(form => {
         form.addEventListener('submit', function (e) {
-            console.log('hihi');
             e.preventDefault();
             Swal.fire({
                 title: 'Are you sure?',

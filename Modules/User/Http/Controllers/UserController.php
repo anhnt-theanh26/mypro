@@ -44,6 +44,7 @@ class UserController extends Controller
         try {
             $data = [
                 'name' => $request['name'],
+                'username' => $request['username'],
                 'email' => $request['email'],
                 'password' => Hash::make($request['password']),
                 'phone' => $request['phone'],
@@ -101,6 +102,7 @@ class UserController extends Controller
         try {
             $data = [
                 'name' => $request['name'],
+                'username' => $request['username'],
                 'email' => $request['email'],
                 'phone' => $request['phone'],
                 'address' => $request['address'],
@@ -178,7 +180,7 @@ class UserController extends Controller
 
     public function deleted()
     {
-        $users = User::onlyTrashed()->orderByDesc('id')->get();
+        $users = User::onlyTrashed()->get();
         return view('user::restore', compact('users'));
     }
 

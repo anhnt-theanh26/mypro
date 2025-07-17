@@ -100,9 +100,7 @@ class CategoryController extends Controller
             $originalSlug = Str::slug($request->name);
             $newSlug = $originalSlug;
             $count = 1;
-            while (
-                Category::withTrashed()->where('slug', $newSlug)->where('id', '!=', $category->id)->exists()
-            ) {
+            while (Category::withTrashed()->where('slug', $newSlug)->where('id', '!=', $category->id)->exists()) {
                 $newSlug = $originalSlug . '-' . $count++;
             }
             $data = [
@@ -167,7 +165,7 @@ class CategoryController extends Controller
 
     public function deleted()
     {
-        $categories = Category::onlyTrashed()->orderByDesc('id')->get();
+        $categories = Category::onlyTrashed()->get();
         return view('category::restore', compact('categories'));
     }
 

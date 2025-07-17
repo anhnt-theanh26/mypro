@@ -15,6 +15,7 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
+            'username' => 'required|string|unique:users,username,' . $this->route('user')->id,
             'email' => 'required|email|unique:users,email,' . $this->route('user')->id,
             'phone' => 'nullable|numeric|min:10|unique:users,phone,' . $this->route('user')->id,
             'address' => 'nullable|string|max:255',
@@ -29,6 +30,11 @@ class UpdateUserRequest extends FormRequest
             'name.required' => 'Vui lòng nhập họ tên.',
             'name.string' => 'Họ tên phải là chuỗi ký tự.',
             'name.max' => 'Họ tên không được vượt quá 255 ký tự.',
+
+            'username.required' => 'Vui lòng nhập tên người dùng.',
+            'username.string' => 'Tên người dùng phải là chuỗi ký tự.',
+            'username.max' => 'Tên người dùng không được vượt quá 255 ký tự.',
+            'username.unique' => 'Tên người dùng đã được sử dụng.',
 
             'email.required' => 'Vui lòng nhập email.',
             'email.email' => 'Email không đúng định dạng.',

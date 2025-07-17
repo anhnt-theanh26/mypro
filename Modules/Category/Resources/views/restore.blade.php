@@ -33,7 +33,6 @@
 
 @push('push_js')
     <script>
-        let createUrl = "{{ route('admin.category.create') }}";
         let dataJson = @json($categories) ?? '';
         let table = 'category';
     </script>

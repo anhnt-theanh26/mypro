@@ -14,11 +14,13 @@
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
             <!-- Menu -->
-            @include('dashboard::sidebar')
+            @includeIf('dashboard::sidebar')
             @includeIf('category::sidebar')
-            @include('product::sidebar')
+            @includeIf('product::sidebar')
             @includeIf('image::sidebar')
             @includeIf('user::sidebar')
+            @includeIf('album::sidebar')
+            @includeIf('song::sidebar')
             @include('admin.partial.sidebar')
             <!-- / Menu -->
 

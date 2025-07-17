@@ -34,7 +34,6 @@
 
 @push('push_js')
     <script>
-        let createUrl = "{{ route('admin.user.create') }}";
         var dataJson = @json($users);
         let table = 'user';
     </script>

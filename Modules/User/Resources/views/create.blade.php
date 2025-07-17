@@ -15,10 +15,18 @@
                     <h5 class="card-header">Người dùng</h5>
                     <div class="card-body">
                         <div class="mb-3">
-                            <label for="name" class="form-label">Tên người dùng</label>
+                            <label for="name" class="form-label">Tên </label>
                             <input type="text" class="form-control" id="name" name="name"
-                                placeholder="Tên người dùng" autofocus />
+                                placeholder="Tên " autofocus />
                             @error('name')
+                                <p class="text-danger">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Tên người dùng</label>
+                            <input type="text" class="form-control" id="username" name="username"
+                                placeholder="Tên người dùng" autofocus />
+                            @error('username')
                                 <p class="text-danger">{{ $message }}</p>
                             @enderror
                         </div>

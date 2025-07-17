@@ -17,8 +17,9 @@
             <table class="dt-scrollableTable table">
                 <thead>
                     <tr>
-                        <th>id</th>
+                        <th>Id</th>
                         <th>Name</th>
+                        <th>User Name</th>
                         <th>Image</th>
                         <th>Email</th>
                         <th>Address</th>
@@ -34,7 +35,6 @@
 
 @push('push_js')
     <script>
-        let createUrl = "{{ route('admin.user.create') }}";
         var dataJson = @json($users);
         let table = 'user';
     </script>

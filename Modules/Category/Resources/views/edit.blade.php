@@ -35,7 +35,10 @@
                                         Choose
                                     </button>
                                 </div>
-                                <div id="holder" class="mx-2" style="width: 100%"></div>
+                                <div id="holder" class="mx-2" style="width: 100%">
+                                    <img class="btn-image rounded-1 object-fit-contain" src="{{ asset($category->image) }}"
+                                        height="80px" alt="Image">
+                                </div>
                             </div>
                         </div>
                         <div class="mb-3">
@@ -56,7 +59,8 @@
                     </div>
                 </div>
                 <button type="submit" class="btn btn-warning waves-effect waves-light">Cập nhập</button>
-                <a href="{{ route('admin.category.index') }}" class="btn btn-secondary waves-effect waves-light">Danh sách</a>
+                <a href="{{ route('admin.category.index') }}" class="btn btn-secondary waves-effect waves-light">Danh
+                    sách</a>
                 <a href="{{ route('admin.category.create') }}" class="btn btn-success waves-effect waves-light">Thêm mới</a>
             </form>
         </div>

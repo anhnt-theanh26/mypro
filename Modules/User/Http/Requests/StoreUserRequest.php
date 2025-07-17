@@ -15,6 +15,7 @@ class StoreUserRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users,username',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:3',
             'phone' => 'nullable|digits_between:10,15|unique:users,phone',
@@ -31,6 +32,11 @@ class StoreUserRequest extends FormRequest
             'name.required' => 'Vui lòng nhập họ tên.',
             'name.string' => 'Họ tên phải là chuỗi ký tự.',
             'name.max' => 'Họ tên không được vượt quá 255 ký tự.',
+
+            'username.required' => 'Vui lòng nhập tên người dùng.',
+            'username.string' => 'Tên người dùng phải là chuỗi ký tự.',
+            'username.max' => 'Tên người dùng không được vượt quá 255 ký tự.',
+            'username.unique' => 'Tên người dùng đã được sử dụng.',
 
             'email.required' => 'Vui lòng nhập email.',
             'email.email' => 'Email không đúng định dạng.',

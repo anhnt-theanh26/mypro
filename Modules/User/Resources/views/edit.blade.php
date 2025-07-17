@@ -16,10 +16,18 @@
                     <h5 class="card-header">Người dùng</h5>
                     <div class="card-body">
                         <div class="mb-3">
-                            <label for="name" class="form-label">Tên người dùng</label>
+                            <label for="name" class="form-label">Tên</label>
                             <input type="text" class="form-control" id="name" name="name"
-                                value="{{ $user->name }}" placeholder="Tên người dùng" autofocus />
+                                value="{{ $user->name }}" placeholder="Tên" autofocus />
                             @error('name')
+                                <p class="text-danger">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Tên người dùng</label>
+                            <input type="text" class="form-control" id="username" name="username"
+                                value="{{ $user->username }}" placeholder="Tên người dùng" autofocus />
+                            @error('username')
                                 <p class="text-danger">{{ $message }}</p>
                             @enderror
                         </div>
@@ -118,8 +126,8 @@
                                 <label class="form-label" for="confirm_password">Confirm Password</label>
                                 <div class="input-group">
                                     <input type="password" class="form-control"
-                                        id="confirm_password"value="{{ old('confirm_password') }}"
-                                        placeholder="******" name="confirm_password" />
+                                        id="confirm_password"value="{{ old('confirm_password') }}" placeholder="******"
+                                        name="confirm_password" />
                                     <span id="basic-default-password2" class="input-group-text cursor-pointer"><i
                                             class="ti ti-eye-off"></i></span>
                                 </div>

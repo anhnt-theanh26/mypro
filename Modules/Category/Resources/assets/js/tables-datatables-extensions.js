@@ -30,7 +30,7 @@ $(function () {
                     targets: 4,
                     render: function (data, type, full, meta) {
                         const imgSrc = data ? data : 'https://static.thenounproject.com/png/1077596-200.png';
-                        return `<img src="${imgSrc}" alt="image" class="rounded-circle" width="50px" />`;
+                        return `<img src="${imgSrc}" alt="image" class="rounded-circle" width="50" height="50" />`;
                     }
                 },
                 {
@@ -55,12 +55,12 @@ $(function () {
                                         <form action="${restoreUrl}" method="POST" style="display:inline;">
                                             <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]').getAttribute('content')}">
                                             <input type="hidden" name="_method" value="POST">
-                                            <button type="submit" class="dropdown-item text-success" style="border: none; background: none; color: red;">Restore</button>
+                                            <button type="submit" class="dropdown-item text-success">Restore</button>
                                         </form>
                                         <form action="${destroyUrl}" class="destroy-form" method="POST" style="display:inline;">
                                             <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]').getAttribute('content')}">
                                             <input type="hidden" name="_method" value="DELETE">
-                                            <button type="submit" class="dropdown-item text-danger" onclick="confirm_delete()" style="border: none; background: none; color: red;">Destroy</button>
+                                            <button type="submit" class="dropdown-item text-danger" onclick="confirm_delete()">Destroy</button>
                                         </form>
                                     </div>
                                 </div>
@@ -75,16 +75,15 @@ $(function () {
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end m-0">
                                     <a href="${editUrl}" class="dropdown-item">Edit</a>
-                                    <form action="${deleteUrl}" class="destroy-form" method="POST" style="display:inline;">
+                                    <form action="${deleteUrl}" method="POST" style="display:inline;">
                                         <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]').getAttribute('content')}">
                                         <input type="hidden" name="_method" value="DELETE">
-                                        <button type="submit" class="dropdown-item text-danger" onclick="confirm_delete()" style="border: none; background: none; color: red;">Delete</button>
+                                        <button type="submit" class="dropdown-item text-danger" onclick="confirm_delete()">Delete</button>
                                     </form>
                                 </div>
                             </div>
                             `
                         );
-
                     }
                 }
             ],
@@ -107,7 +106,6 @@ $(function () {
 function confirm_delete() {
     document.querySelectorAll('.destroy-form').forEach(form => {
         form.addEventListener('submit', function (e) {
-            console.log('hihi');
             e.preventDefault();
             Swal.fire({
                 title: 'Are you sure?',

@@ -4,5 +4,7 @@
     "Image": true,
     "User": true,
     "Login": true,
-    "Dashboard": true
+    "Dashboard": true,
+    "Song": true,
+    "Album": true
 }
