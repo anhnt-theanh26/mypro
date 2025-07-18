@@ -47,7 +47,7 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="release_date" class="form-label">Ngày xuất bản</label>
+                            <label for="release_date" class="form-label">Ngày phát hàng</label>
                             <input type="text" class="form-control flatpickr-input active" name="release_date"
                                 placeholder="YYYY-MM-DD" id="flatpickr-date" readonly="readonly"
                                 value="{{ old('release_date') }}">

@@ -15,15 +15,14 @@ class CreateSongsTable extends Migration
     {
         Schema::create('songs', function (Blueprint $table) { // Mục đích: Quản lý thông tin bài hát.
             $table->id();
-            $table->string('title')->nullable();  // Tiêu đề bài hát
+            $table->string('name')->nullable();  // Tiêu đề bài hát
             $table->string('artist')->nullable(); // Tên nghệ sĩ
-            $table->unsignedBigInteger('album_id')->nullable(); // Tên album (nếu có)
+            $table->unsignedBigInteger('album_id')->nullable();
             $table->string('file_path')->nullable(); // Đường dẫn tệp âm thanh
             $table->integer('play_count')->default(0);  // Số lần phát bài hát
             $table->enum('type', ['normal', 'premium'])->default('normal');  // Loại bài hát: bình thường hoặc premium
             $table->integer('duration')->nullable(); // Thời gian bài hát (seconds)
             $table->timestamp('release_date')->nullable(); // Ngày phát hành
-            $table->unsignedBigInteger('album_id')->nullable(); 
             $table->foreignId('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
