@@ -21,3 +21,8 @@ Route::middleware('auth.admin')->prefix('admin')->as('admin.')->group(function (
     });
     Route::resource('category', CategoryController::class);
 });
+
+Route::get('{slug}-c{id}.html', [CategoryController::class, 'show'])->where([
+    'slug' => '[\w-]+',
+    'id' => '\d+',
+])->name('xem');

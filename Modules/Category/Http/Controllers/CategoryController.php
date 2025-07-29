@@ -67,9 +67,10 @@ class CategoryController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function show(string $id)
+    public function show(string $slug, string $id)
     {
-        return view('category::show');
+        $category = Category::withTrashed()->where('id', $id)->first();
+        return view('category::show', compact('category'));
     }
 
     /**

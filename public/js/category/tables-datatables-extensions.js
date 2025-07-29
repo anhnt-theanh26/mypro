@@ -39,6 +39,7 @@ $(function () {
                     searchable: false,
                     orderable: false,
                     render: function (data, type, full, meta) {
+                        var showUrl = `/${data.slug}-c${data.id}.html`;
                         var editUrl = `/admin/${table}/${full.id}/edit`;
                         var deleteUrl = `/admin/${table}/${full.id}/delete`;
                         var restoreUrl = `/admin/${table}/${full.id}/restore`;
@@ -51,6 +52,7 @@ $(function () {
                                         <i class="text-primary ti ti-dots-vertical"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end m-0">
+                                        <a href="${showUrl}" class="dropdown-item">Show</a>
                                         <a href="${editUrl}" class="dropdown-item">Edit</a>
                                         <form action="${restoreUrl}" method="POST" style="display:inline;">
                                             <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]').getAttribute('content')}">
@@ -74,6 +76,7 @@ $(function () {
                                     <i class="text-primary ti ti-dots-vertical"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end m-0">
+                                    <a href="${showUrl}" class="dropdown-item">Show</a>
                                     <a href="${editUrl}" class="dropdown-item">Edit</a>
                                     <form action="${deleteUrl}" method="POST" style="display:inline;">
                                         <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]').getAttribute('content')}">

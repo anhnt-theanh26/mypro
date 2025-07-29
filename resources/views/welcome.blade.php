@@ -17,6 +17,10 @@ echo '</pre>';
 echo preg_match_all($pattern, $subject, $matches);
 
 /*
+re_path(r'^(?P<product_slug>[\w-]+)-a(?P<product_id>\d+)\.html$', views.product, name='product'),
+re_path(r'^(?P<article_slug>[\w-]+)-a(?P<article_id>\d+)\.html$', views.article, name='article'),
+    
+re_path(r'^(?P<article_id>[\w-]+)-a(?P</article_id>[0-9]+)\.html$')
 
 ^                   tìm giá trị ở đầu chuỗi
 $                   tìm giá trị ở cuối chuỗi
@@ -43,3 +47,5 @@ a?b                 a? nghĩa là có thể có 0 hoặc 1 ký tự 'a' (tùy ch
 
 */
 // '^(?P<article_slug>[\w-]+)-a(?P<article_id>\d+)\.html$'
+
+
