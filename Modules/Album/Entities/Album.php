@@ -17,6 +17,7 @@ class Album extends Model
         'artist',
         'thumbnail',
         'release_date',
+        'is_hot',
     ];
 
     protected static function newFactory()

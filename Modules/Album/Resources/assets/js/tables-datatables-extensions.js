@@ -24,7 +24,7 @@ $(function () {
                     targets: 4,
                     render: function (data, type, full, meta) {
                         const imgSrc = data ? data : 'https://static.thenounproject.com/png/1077596-200.png';
-                        return `<img src="${imgSrc}" alt="image" class="rounded-circle" width="50px" />`;
+                        return `<img src="${imgSrc}" alt="image" class="" width="50px" />`;
                     }
                 },
                 {

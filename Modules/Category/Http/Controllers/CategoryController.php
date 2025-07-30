@@ -109,8 +109,10 @@ class CategoryController extends Controller
                 'slug' => $newSlug,
                 'is_hot' => $request->has('is_hot') ? true : false,
                 'category_parent_id' => $request->category_parent_id,
-                'image' => $request->image,
             ];
+            if($request->image){
+                $data['image'] = $request->image;
+            }
             $category->update($data);
             Alert::success('Thanh cong', 'Cập nhật danh mục thành công');
             // return redirect()->route('admin.category.index')->with('success', 'Cập nhật thành công!');

@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
 use Modules\Album\Entities\Album;
 use Modules\Album\Http\Requests\StoreAlumRequest;
+use Modules\Album\Http\Requests\UpdateAlbumRequest;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class AlbumController extends Controller
@@ -43,7 +44,7 @@ class AlbumController extends Controller
             $slug = $originalSlug;
             $count = 1;
             while (Album::withTrashed()->where('slug', $slug)->exists()) {
-                $slug = $originalSlug + '-' + $count;
+                $slug = $originalSlug . '-' . $count;
             }
             $data = [
                 'name' => $request['name'],
@@ -89,7 +90,7 @@ class AlbumController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function update(Request $request, Album $album)
+    public function update(UpdateAlbumRequest $request, Album $album)
     {
         try {
             $album = Album::withTrashed()->where('id', $album->id)->first();
@@ -107,10 +108,12 @@ class AlbumController extends Controller
                 'name' => $request['name'],
                 'slug' => $newSlug,
                 'artist' => $request['artist'],
-                'thumbnail' => $request['thumbnail'],
                 'release_date' => $request['release_date'],
                 'is_hot' => $request['is_hot'] ? true : false,
             ];
+             if($request->thumbnail){
+                $data['thumbnail'] = $request['thumbnail'];
+            }
             $album->update($data);
             Alert::success('Album', 'Thêm album thành công');
             return redirect()->back();

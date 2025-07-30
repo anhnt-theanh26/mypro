@@ -7,8 +7,9 @@
 @endpush
 
 @section('content-child')
-    <form action="{{ route('admin.song.store') }}" method="post">
+    <form action="{{ route('admin.song.update', $song) }}" method="post">
         @csrf
+        @method('put')
         <div class="row">
             <div class="col-xl-12">
                 <div class="card mb-4">
@@ -17,7 +18,7 @@
                         <div class="mb-3">
                             <label for="name" class="form-label">Tên bài hát</label>
                             <input type="text" class="form-control" id="name" name="name"
-                                value="{{ old('name') }}" placeholder="Tên bài hát...">
+                                value="{{ $song->name }}" placeholder="Tên bài hát...">
                             @error('name')
                                 <p class="text-danger">{{ $message }}</p>
                             @enderror
@@ -25,7 +26,7 @@
                         <div class="mb-3">
                             <label for="artist" class="form-label">Tên nghệ sĩ</label>
                             <input type="text" class="form-control" id="artist" name="artist"
-                                value="{{ old('artist') }}" placeholder="Nghệ sĩ...">
+                                value="{{ $song->artist }}" placeholder="Nghệ sĩ...">
                             @error('artist')
                                 <p class="text-danger">{{ $message }}</p>
                             @enderror
@@ -33,18 +34,19 @@
                         <div class="mb-3">
                             <label for="album_id" class="form-label">Album</label>
                             <select id="album_id" name="album_id" class="form-select">
-                                <option>No Album</option>
+                                <option value="">No Album</option>
                                 @foreach ($albums as $album)
-                                    <option value="{{ $album->id }}" {{ old('album_id') ? 'selected' : '' }}>
+                                    <option value="{{ $album->id }}"
+                                        {{ $song->album_id == $album->id ? 'selected' : '' }}>
                                         {{ $album->name }}({{ $album->artist }})</option>
                                 @endforeach
                             </select>
-                            @error('album')
+                            @error('album_id')
                                 <p class="text-danger">{{ $message }}</p>
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label class="form-label" for="cover_art">Ảnh đại diện</label><br>
+                            <label for="lfm" class="form-label">Ảnh đại diện</label><br>
                             <input id="thumbnail" class="form-control" type="hidden" name="cover_art">
                             <div class="d-flex align-items-center">
                                 <div class="input-group" style="position: relative; display: inline-block; width: 80px;">
@@ -56,14 +58,17 @@
                                         Choose
                                     </button>
                                 </div>
-                                <div id="holder" class="mx-2" style="width: 100%"></div>
+                                <div id="holder" class="mx-2" style="width: 100%">
+                                    <img class="btn-image rounded-1 object-fit-contain" src="{{ asset($song->cover_art) }}"
+                                        height="80px" alt="Image">
+                                </div>
                             </div>
                             @error('cover_art')
                                 <p class="text-danger">{{ $message }}</p>
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label class="form-label" for="file_path">Đường dẫn bài hát</label><br>
+                            <label for="lfms" class="form-label">Đường dẫn bài hát</label><br>
                             <input id="thumbnails" class="form-control" type="hidden" name="file_path">
                             <div class="d-flex align-items-center">
                                 <div class="input-group" style="position: relative; display: inline-block; width: 80px;">
@@ -75,7 +80,12 @@
                                         Choose
                                     </button>
                                 </div>
-                                <div id="holders" class="mx-2" style="width: 100%"></div>
+                                <div class="mx-2" style="width: 100%">
+                                    <audio controls>
+                                        <source id="mp3" src="{{ $song->file_path }}" type="audio/mpeg">
+                                        {{ $song->name }}
+                                    </audio>
+                                </div>
                             </div>
                             @error('file_path')
                                 <p class="text-danger">{{ $message }}</p>
@@ -84,8 +94,8 @@
                         <div class="mb-3">
                             <label for="type" class="form-label">Kiểu bài hát</label>
                             <select id="type" name="type" class="form-select">
-                                <option value="normal" {{ old('type') == 'normal' ? 'selected' : '' }}>Normal</option>
-                                <option value="premium" {{ old('type') == 'premium' ? 'selected' : '' }}>Premium</option>
+                                <option value="normal" {{ $song->type == 'normal' ? 'selected' : '' }}>Normal</option>
+                                <option value="premium" {{ $song->type == 'premium' ? 'selected' : '' }}>Premium</option>
                             </select>
                             @error('type')
                                 <p class="text-danger">{{ $message }}</p>
@@ -94,7 +104,7 @@
                         <div class="mb-3">
                             <label for="duration" class="form-label">Thời gian bài hát 'giây'</label>
                             <input type="number" class="form-control" id="duration" name="duration"
-                                value="{{ old('duration') }}" placeholder="Duration...">
+                                value="{{ $song->duration }}" placeholder="Duration...">
                             @error('duration')
                                 <p class="text-danger">{{ $message }}</p>
                             @enderror
@@ -103,7 +113,7 @@
                             <label for="release_date" class="form-label">Ngày phát hàng</label>
                             <input type="text" class="form-control flatpickr-input active" name="release_date"
                                 placeholder="YYYY-MM-DD" id="flatpickr-date" readonly="readonly"
-                                value="{{ old('release_date') }}">
+                                value="{{ $song->release_date }}">
                             @error('release_date')
                                 <p class="text-danger">{{ $message }}</p>
                             @enderror
@@ -112,8 +122,9 @@
                             <label for="category_id" class="form-label">Danh mục</label>
                             <select id="category_id" name="category_id" class="form-select">
                                 @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                                        {{ $category->name }}</option>
+                                    <option value="{{ $category->id }}"
+                                        {{ $song->category_id == $category->id ? 'selected' : '' }}>{{ $category->name }}
+                                    </option>
                                 @endforeach
                             </select>
                             @error('category_id')
@@ -124,7 +135,7 @@
                 </div>
             </div>
         </div>
-        <button type="submit" class="btn btn-success waves-effect waves-light">Thêm mới</button>
+        <button type="submit" class="btn btn-warning waves-effect waves-light">Cập nhập</button>
         <a href="{{ route('admin.song.index') }}" class="btn btn-secondary waves-effect waves-light">Danh
             sách</a>
     </form>
@@ -135,8 +146,6 @@
     <script src="{{ asset('js/album/forms-pickers.js') }}"></script>
     <script src="{{ asset('/vendor/laravel-filemanager/js/stand-alone-button.js') }}"></script>
     <script>
-        // $('#lfm').filemanager('cover_art');
-        // $('#lfms').filemanager('file_path');
         $('#lfm').filemanager('cover_art');
         $('#lfms').filemanager('file_path');
     </script>
